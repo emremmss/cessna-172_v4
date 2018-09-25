@@ -1,0 +1,227 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Aircraft:
+# Cessna 172
+# Small single piston engine general aviation airplane
+#
+# File name:
+# cessna172-aae319-v4
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Authors:
+#
+# Jeff Scott
+# 2000/04/06  FGFS implementation, initial model
+#             This model was developed from materials provided in AAE 319
+#             (a stability and control course at the University of Illinois) and is
+#             based on data used in the Frasca R-SEE flight simulator.  The data
+#             is from:
+#             Sivier, Kenneth,  "Cessna 172 Data for the Frasca R-SEE
+#             Aircraft Flight Simulator," 24 Feb 1999.
+# 
+# Michael Selig 
+# 2002/02/24  added gear data
+#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Notes:
+#
+# - have not tested w/ CL and CD as functions of alfa and flaps
+# - have only tested w/ CL and CD as functions of alfa alone as given below  
+#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# References
+#
+# - K.R. Sivier's notes
+#
+# - Additional models and updates 
+#   http://amber.aae.uiuc.edu/~m-selig/apasim.html
+#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#init recordRate 30      # []
+
+init Dz_cg     1.5    # [ft]
+
+geometry bw   35.8      # [ft]        Sivier pg 1
+geometry cbar  4.90     # [ft]        Sivier pg 1
+geometry Sw  174.0      # [ft^2]      Sivier pg 1
+
+controlSurface de 18.25 17   # [deg]  Sivier pg 4
+controlSurface da 17.5  17.5 # [deg]  Sivier pg 4
+controlSurface dr 16    16   # [deg]  Sivier pg 4
+
+mass Weight  2405       # [lb]        sum of empty+payload+fuel tanks
+mass I_xx     948.0     # [slug-ft^2] Sivier pg 1
+mass I_yy    1346.0     # [slug-ft^2] Sivier pg 1
+mass I_zz    1967.0     # [slug-ft^2] Sivier pg 1
+mass I_xz       0.0     # [slug-ft^2] Sivier pg 1
+
+engine c172
+
+CL CLfa   /home/m-seligSim/work/Aircraft-uiuc/cessna172-aae319-v4/CLfa.dat 0 1     # [] Sivier pg 5-6
+# lift as a function of alfa and flaps, not tested
+#CL CLfadf /home/m-seligSim/work/Aircraft-uiuc/cessna172-aae319-v4/CLfadf.dat 0 1 1 # [] Sivier pg 5-6
+CL CL_q     3.9         # [/rad]      Sivier pg 11
+CL CL_de    0.43        # [/rad]      Sivier pg 11
+
+CD CDfa   /home/m-seligSim/work/Aircraft-uiuc/cessna172-aae319-v4/CDfa.dat 0 1     # [] Sivier pg 7-8
+# drag as a function of alfa and flaps, not tested
+#CD CDfadf /home/m-seligSim/Aircraft-uiuc/cessna172-aae319-v4/CDfadf.dat 0 1 1 # [] Sivier pg 7-8
+
+Cm Cmfa   /home/m-seligSim/work/Aircraft-uiuc/cessna172-aae319-v4/Cmfa.dat 0 1     # [] Sivier pg 10
+Cm Cm_adot -5.2         # [/rad]      Sivier pg 11
+Cm Cm_q   -12.4         # [/rad]      Sivier pg 11
+Cm Cm_de   -1.28        # [/rad]      Sivier pg 11
+
+CY CY_beta -0.31        # [/rad]      Sivier pg 11
+CY CY_p    -0.037       # [/rad]      Sivier pg 11
+CY CY_r     0.21        # [/rad]      Sivier pg 11
+CY CY_da    0.0         # [/rad]      Sivier pg 11
+CY CY_dr    0.187       # [/rad]      Sivier pg 11
+
+Cl Cl_beta -0.089       # [/rad]      Sivier pg 11
+Cl Cl_p    -0.47        # [/rad]      Sivier pg 11
+Cl Cl_r     0.096       # [/rad]      Sivier pg 11
+Cl Cl_da   -0.178       # [/rad]      Sivier pg 11, sign reversed
+Cl Cl_dr    0.0147      # [/rad]      Sivier pg 11
+
+Cn Cn_beta  0.065       # [/rad]      Sivier pg 11
+Cn Cn_p    -0.03        # [/rad]      Sivier pg 11
+Cn Cn_r    -0.099       # [/rad]      Sivier pg 11
+Cn Cn_da   -0.053       # [/rad]      Sivier pg 11, sign reversed
+Cn Cn_dr   -0.0657      # [/rad]      Sivier pg 11
+
+
+# nose wheel (must be position 0 if present)
+gear Dx_gear     0     2.5      # x-offset from CG [ft]
+gear Dy_gear     0     0        # y-offset from CG [ft]
+gear Dz_gear     0     5        # z-offset from CG [ft]
+gear cgear       0  1250        # damping [lbs/ft/sec]
+gear kgear       0  2500        # springiness [lbs/ft]
+gear muGear      0     0.01     # rolling coefficient
+gear strutLength 0    -0.5      # gear travel [ft] (not yet used)
+
+# right gear (must be position 1 if present)
+gear Dx_gear     1    -1.2      # [ft]
+gear Dy_gear     1     2.5      # [ft]
+gear Dz_gear     1     5        # [ft]
+gear cgear       1  1250        # [lbs/ft/sec]
+gear kgear       1  2500        # [lbs/ft]
+gear muGear      1     0.01     # rolling coefficient
+gear strutLength 1     2.5      # gear travel [ft] (not yet used)
+
+# left gear (must be position 2 if present)
+gear Dx_gear     2    -1.2      # [ft]
+gear Dy_gear     2    -2.5      # [ft]
+gear Dz_gear     2     5        # [ft]
+gear cgear       2  1250        # [lbs/ft/sec]
+gear kgear       2  2500        # [lbs/ft]
+gear muGear      2     0.01     # rolling coefficient
+gear strutLength 2     2.5      # gear travel [ft] (not yet used)
+
+
+# right wing
+gear Dx_gear     3     0        # [ft]
+gear Dy_gear     3    17.5      # [ft]
+gear Dz_gear     3     1        # [ft]
+gear cgear       3  1000        # [lbs/ft/sec]
+gear kgear       3  2000        # [lbs/ft]
+gear muGear      3     0.01     # rolling coefficient
+gear strutLength 3     2.5      # gear travel [ft] (not yet used)
+
+# left wing
+gear Dx_gear     4     0        # [ft]
+gear Dy_gear     4   -17.5      # [ft]
+gear Dz_gear     4     1        # [ft]
+gear cgear       4  1000        # [lbs/ft/sec]
+gear kgear       4  2000        # [lbs/ft]
+gear muGear      4     0.01     # rolling coefficient
+gear strutLength 4     2.5      # gear travel [ft] (not yet used)
+
+# tail
+gear Dx_gear     5   -12        # [ft]
+gear Dy_gear     5     0        # [ft]
+gear Dz_gear     5     2.5      # [ft]
+gear cgear       5  2000        # [lbs/ft/sec]
+gear kgear       5  3000        # [lbs/ft]
+gear muGear      5     0.01     # rolling coefficient
+gear strutLength 5     2.5      # gear travel [ft] (not yet used)
+
+# end of file '*'
+*
+
+#record Dx_pilot              # [ft]      x-location
+#record Dy_pilot              # [ft]     y-loaction
+#record Dz_pilot              # [ft]      z-location
+record V_north               # [ft/s]    x-velocity
+record V_east                # [ft/s]    y-velocity
+record V_down                # [ft/s]    z-velocity
+record V_rel_wind            # [ft/s]    total velocity
+record Dynamic_pressure      # [lb/ft^2] dynamic pressure
+record Alpha                 # [rad]     angle of attack
+record Alpha_dot             # [rad/s]   rate of change of alpha
+record Beta                  # [rad]     sideslip angle
+record Beta_dot              # [rad/s]   rate of change of beta
+#record Gamma                # [rad]     flight path angle
+#record P_body                # [rad]     roll rate
+#record Q_body                # [rad]     pitch rate
+#record R_body                # [rad]     yaw rate
+#record Phi                   # [rad]     bank angle
+#record Theta                 # [rad]     pitch attitude angle
+#record Theta_dot             # [rad]     rate change of theta
+#record Psi                   # [rad]     heading angle
+#record long_trim
+#record trim_inc
+#record Density               # [slug/ft^3] air density
+#record Mass                  # [slug]    aircraft mass
+#record Simtime               # [s]       current sim time
+#record dt                    # [s]       current time step
+record elevator              # [rad]     elevator deflection
+record aileron               # [rad]     aileron deflection
+record rudder                # [rad]     rudder deflection
+#record CDfaI                 # []        CD(alpha)
+#record CDfadeI               # []        CD(alpha,delta_e)
+#record CD                    # []        drag coefficient
+#record CLfaI                 # []        CL(alpha)
+#record CLfadeI               # []        CL(alpha,delta_e)
+record CL                    # []        lift coefficient
+#record CmfadeI               # []        Cm(alpha,delta_e)
+#record Cm                    # []        pitch moment coefficient
+#record CYfadaI               # []        CY(alpha,delta_a)
+#record CYfadrI               # []        CY(alpha,delta_r)
+#record CY                    # []        side-force coefficient
+#record ClfadaI               # []        Cl(alpha,delta_a)
+#record ClfadrI               # []        Cl(alpha,delta_r)
+#record Cl                    # []        roll moment coefficient
+#record CnfadaI               # []        Cn(alpha,delta_a)
+#record CnfadrI               # []        Cn(alpha,delta_r)
+#record Cn                    # []        yaw moment coefficient
+#record F_X_wind              # [lb]      aero x-force in wind-axes
+#record F_Y_wind              # [lb]      aero y-force in wind-axes
+#record F_Z_wind              # [lb]      aero z-force in wind-axes
+#record F_X_aero              # [lb]      aero x-force in body-axes
+#record F_Y_aero              # [lb]      aero y-force in body-axes
+#record F_Z_aero              # [lb]      aero z-force in body-axes
+#record F_X_engine            # [lb]      prop x-force in body-axes
+#record F_Y_engine            # [lb]      prop y-force in body-axes
+#record F_Z_engine            # [lb]      prop z-force in body-axes
+#record F_X_gear              # [lb]      gear x-force in body-axes
+#record F_Y_gear              # [lb]      gear y-force in body-axes
+#record F_Z_gear              # [lb]      gear z-force in body-axes
+#record F_X                   # [lb]      total x-force in body-axes
+#record F_Y                   # [lb]      total y-force in body-axes
+#record F_Z                   # [lb]      total z-force in body-axes
+#record M_l_aero              # [ft-lb]   aero roll moment in body axes
+#record M_m_aero              # [ft-lb]   aero pitch moment in body axes
+#record M_n_aero              # [ft-lb]   aero yaw moment in body axes
+#record M_l_engine            # [ft-lb]   prop roll moment in body axes
+#record M_m_engine            # [ft-lb]   prop pitch moment in body axes
+#record M_n_engine            # [ft-lb]   prop yaw moment in body axes
+#record M_l_gear              # [ft-lb]   gear roll moment in body axes
+#record M_m_gear              # [ft-lb]   gear pitch moment in body axes
+#record M_n_gear              # [ft-lb]   gear yaw moment in body axes
+#record M_l_rp                # [ft-lb]   total roll moment in body axes
+#record M_m_rp                # [ft-lb]   total pitch moment in body axes
+#record M_n_rp                # [ft-lb]   total yaw moment in body axes
